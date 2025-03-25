@@ -15,10 +15,18 @@ def emotion_detector(text_to_analyze):
     # Send a POST request to the Watson NLP API
     response = requests.post(url, headers=headers, json=input_json)
 
+    # Print the response for debugging
+    print("Response Status Code:", response.status_code)
+    try:
+        print("Response JSON:", response.json())  # Print the full JSON response
+    except Exception as e:
+        print("Error parsing JSON response:", e)
+        print("Response Text:", response.text)
+
     # Check if the request was successful
     if response.status_code == 200:
-        # Return the 'text' attribute of the response object
-        return response.json().get('text', 'No text attribute found in response')
+        # Return the full response JSON for now
+        return response.json()
     else:
         # Handle errors
         return f"Error: {response.status_code}, {response.text}"
