@@ -1,6 +1,17 @@
 import requests
 
 def emotion_detector(text_to_analyze):
+    # Check for blank input
+    if not text_to_analyze.strip():
+        return {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }
+
     # Define the URL and headers for the Watson NLP Emotion Predict function
     url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
     headers = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
@@ -39,7 +50,24 @@ def emotion_detector(text_to_analyze):
             }
             return formatted_output
         else:
-            return "No emotion predictions found in response."
+            return {
+                'anger': None,
+                'disgust': None,
+                'fear': None,
+                'joy': None,
+                'sadness': None,
+                'dominant_emotion': None
+            }
+    elif response.status_code == 400:
+        # Handle blank input or invalid requests
+        return {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }
     else:
-        # Handle errors
+        # Handle other errors
         return f"Error: {response.status_code}, {response.text}"
